@@ -1,0 +1,144 @@
+<div class="pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Add Student</h1>
+</div>
+<form #addForm="ngForm" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-lg-5 col-md-12 col-sm-12">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <label>First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            [(ngModel)]="student.firstName"
+            class="form-control"
+            required
+            minlength="4"
+            #firstNameValidator="ngModel"
+          />
+          <div
+            *ngIf="
+              (firstNameValidator.invalid && firstNameValidator.touched) ||
+              (firstNameValidator.invalid && addForm.submitted)
+            "
+            class="alert alert-danger"
+          >
+            <div *ngIf="firstNameValidator.errors.required">
+              Name is required
+            </div>
+            <div *ngIf="firstNameValidator.errors.minlength">
+              4 caractere au minimum
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            [(ngModel)]="student.lastName"
+            class="form-control"
+            #lastNameValidator="ngModel"
+            required
+            minlength="4"
+          />
+          <div
+            *ngIf="
+              (lastNameValidator.invalid && lastNameValidator.touched) ||
+              (lastNameValidator.invalid && addForm.submitted)
+            "
+            class="alert alert-danger"
+          >
+            <div *ngIf="lastNameValidator.errors.required">
+              Last Name is required
+            </div>
+            <div *ngIf="lastNameValidator.errors.minlength">
+              4 caractere au minimum
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="student.email"
+            class="form-control"
+            email
+            #emailValidator="ngModel"
+            required
+          />
+          <div
+            class="alert alert-danger"
+            *ngIf="
+              (emailValidator.invalid && emailValidator.touched) ||
+              (addForm.submitted && emailValidator.invalid)
+            "
+          >
+            Email not valid
+          </div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            [(ngModel)]="student.password"
+            class="form-control"
+            #passwordValidator="ngModel"
+            required
+          />
+          <div
+            *ngIf="
+              (passwordValidator.invalid && passwordValidator.touched) ||
+              (passwordValidator.invalid && addForm.submitted)
+            "
+            class="alert alert-danger"
+          >
+            <div *ngIf="passwordValidator.errors.required">
+              Password is required
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <label>Phone number</label>
+          <input
+            type="text"
+            name="phone"
+            [(ngModel)]="student.phone"
+            class="form-control"
+            #phoneValidator="ngModel"
+            required
+            minlength="8"
+            maxlength="8"
+          />
+          <div
+            *ngIf="
+              (phoneValidator.invalid && phoneValidator.touched) ||
+              (phoneValidator.invalid && addForm.submitted)
+            "
+            class="alert alert-danger"
+          >
+            <div *ngIf="phoneValidator.errors.required">
+              Phone is required
+            </div>
+            <div *ngIf="phoneValidator.errors.minlength">
+              8 caractere au minimum
+            </div>
+            <div *ngIf="phoneValidator.errors.maxlength">
+              8 caractere au maximum
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group text-right">
+        <button type="button" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-success">
+          {{ id ? "Edit Student" : "Add Student" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
