@@ -16,13 +16,24 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AuthComponent } from './auth/auth.component';
 import { RegisterComponent } from './register/register.component';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { NgxLocalStorageModule } from 'ngx-localstorage';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+import { PermissionGuard } from './shared/gards/permission.guard';
 
 const routes: Routes = [
-  { path: 'add-student', component: AddStudentComponent },
-  { path: 'all-student', component: ListStudentsComponent },
+  { path: 'add-student', component: AddStudentComponent, canActivate: [PermissionGuard] },
+  { path: 'all-student', component: ListStudentsComponent, canActivate: [PermissionGuard] },
   { path: 'login', component: AuthComponent },
   { path: 'register', component: RegisterComponent },
 ];
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [
@@ -43,6 +54,18 @@ const routes: Routes = [
     ToastrModule.forRoot(),
     SweetAlert2Module.forRoot(),
     AngularFireAuthModule,
+    BrowserModule,
+    NgxLocalStorageModule.forRoot(),
+    BrowserAnimationsModule,
+    BsDropdownModule.forRoot(),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
 
   providers: [ToastrService],
