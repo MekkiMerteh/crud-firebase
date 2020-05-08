@@ -1,12 +1,59 @@
+<div>
+<div class="btn-group mb-3" dropdown>
+  <button
+    id="button-basic"
+    dropdownToggle
+    type="button"
+    class="btn btn-primary dropdown-toggle"
+    aria-controls="dropdown-basic"
+  >
+    Settings <span class="caret"></span>
+  </button>
+  <ul
+    id="dropdown-basic"
+    *dropdownMenu
+    class="dropdown-menu"
+    role="menu"
+    aria-labelledby="button-basic"
+  >
+    <li role="menuitem">
+      <a class="dropdown-item" *ngIf="loginService.isAuthenticated()">{{
+        userConnected
+      }}</a>
+    </li>
+    <li role="menuitem">
+      <a
+        class="dropdown-item"
+        *ngIf="loginService.isAuthenticated()"
+        [routerLink]="'/login'"
+        (click)="logout()"
+        >Logout</a
+      >
+    </li>
+    <li role="menuitem">
+      <a class="dropdown-item" *ngIf="!loginService.isAuthenticated()" [routerLink]="'/login'">Login</a>
+    </li>
+  </ul>
+</div>
+ 
+  <select #langSelect (change)="translate.use(langSelect.value)" class="d-block">
+    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+  </select>
+</div>
 <div class="row">
   <div class="col-md-2">
-  <nav class="nav flex-column">
-    <a class="nav-link" routerLinkActive="active" routerLink="add-student">Add Student</a>
-    <a class="nav-link" routerLinkActive="active" routerLink="all-student">list Student</a>
+    <nav class="nav flex-column" *ngIf="loginService.isAuthenticated()">
+      <a class="nav-link" routerLinkActive="active" routerLink="add-student"
+        >Add Student</a
+      >
+      <a class="nav-link" routerLinkActive="active" routerLink="all-student"
+        >list Student</a
+      >
 
-    <a class="nav-link" routerLink="/"></a>    
-  </nav>
+      <a class="nav-link" routerLink="/"></a>
+    </nav>
   </div>
   <div class="col-md-10">
-  <router-outlet></router-outlet>
-  </div></div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

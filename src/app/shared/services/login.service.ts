@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { LocalStorageService } from 'ngx-localstorage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(public afAuth: AngularFireAuth, public router: Router) {}
+  constructor(
+    public afAuth: AngularFireAuth,
+    public router: Router,
+    private localStorage: LocalStorageService
+  ) {}
 
   signIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.router.navigate(['/']);
-      })
-
-      .catch((erreur) => {
-        console.log(erreur);
-      });
+    return this.afAuth.signInWithEmailAndPassword(email, password);
   }
 
   signUp(email: string, password: string) {
@@ -32,8 +29,17 @@ export class LoginService {
   }
 
   resetPassword(email: string) {
-    return this.afAuth.sendPasswordResetEmail(email).then(() => {
-      alert('check you email');
-    });
+    return this.afAuth.sendPasswordResetEmail(email);
+  }
+
+  isAuthenticated() {
+    if (this.localStorage.get('user')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  logout() {
+    this.localStorage.clear();
   }
 }
